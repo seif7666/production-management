@@ -1,0 +1,16 @@
+button {
+    background: none;
+    border: none;
+    margin: 1em
+}
+
+.N {
+    padding: .2em;
+    border: black solid .1em;
+    border-bottom: black solid 3px;
+    border-right: black solid 2px;
+}
+
+.N:active {
+    background-color: grey;
+}
