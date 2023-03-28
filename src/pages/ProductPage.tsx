@@ -3,6 +3,8 @@ import { Product } from "../store/Product";
 import { ProductBySize } from "../store/ProductChildren";
 import "../css/global.css";
 import productFactory, { ProductFactory } from "../store/ProductFactory";
+import { useNavigate } from "react-router-dom";
+import { LINKS } from "../constants";
 
 type ProductsListData = {
   products: Product[];
@@ -17,6 +19,7 @@ const ProductsList = (data: ProductsListData) => {
 const ProductPage = () => {
   const [products, setProducts] = useState(productFactory.getProducts());
   const [value, setValue] = useState(0);
+  const navigate= useNavigate();
 
   useEffect(() => {
     console.log("RERENDERING...");
@@ -35,7 +38,9 @@ const ProductPage = () => {
             bottom: "30%",
           }}
         >
-          <button className="N">ADD</button>
+          <button className="N" onClick={()=>{
+            navigate(LINKS.addProduct);
+          }}>ADD</button>
           <button
             className="N"
             onClick={() => {
