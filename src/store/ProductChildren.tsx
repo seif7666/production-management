@@ -6,6 +6,8 @@ export class ProductBySize extends Product{
         super(sku,name,price);
         this.size= size;
     }
+
+    
     public getInnerComponent(): JSX.Element {
         return (
             <p>Product By Size!</p>
