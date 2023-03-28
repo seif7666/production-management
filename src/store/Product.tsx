@@ -23,6 +23,10 @@ export abstract class Product extends React.Component<{},{checked:boolean}> {
     this.setState({checked:false})
     
   }
+  public setSKU=(sku)=>this.SKU=sku;
+  public setPrice=(price)=>this.price=price;
+  public setName=(name)=>this.name=name;
+
   
   public getChecked = () => this.isChecked;
 

@@ -1,0 +1,19 @@
+.div-label {
+    display: inline;
+    width: 30%
+}
+
+.div-input {
+    width: 80%;
+    display: inline;
+    float: right
+}
+
+input {
+    border: black solid 2px;
+    width: 50%;
+}
+
+.input-div-container {
+    width: 80%;
+}

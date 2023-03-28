@@ -1,5 +1,5 @@
 import { Product } from "./Product";
-import { ProductBySize } from "./ProductChildren";
+import { Book,DVD,Furniture } from "./ProductChildren";
 
 export class ProductFactory{
     private static singletonInstance:ProductFactory=new ProductFactory();
@@ -20,7 +20,7 @@ export class ProductFactory{
     private loadProducts(){
         this.products=[];
         for (let i= 0;i<10;i++){
-            this.products.push(new ProductBySize(i+"0000","Product "+i,150*(i+1),i));
+            this.products.push(new Book(i+"0000","Product "+i,150*(i+1),i));
         }
         console.log(this.products);
     }

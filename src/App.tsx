@@ -1,5 +1,4 @@
 import React from 'react';
-import ProductPage from './pages/ProductPage';
 import ProjectRouters from './ProjectRoutes';
 
 function App() {

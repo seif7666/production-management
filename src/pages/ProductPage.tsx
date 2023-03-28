@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../store/Product";
-import { ProductBySize } from "../store/ProductChildren";
+import { Book } from "../store/ProductChildren";
 import "../css/global.css";
 import productFactory, { ProductFactory } from "../store/ProductFactory";
 import { useNavigate } from "react-router-dom";
 import { LINKS } from "../constants";
+import Line from "../components/Line";
 
 type ProductsListData = {
   products: Product[];
@@ -27,16 +28,10 @@ const ProductPage = () => {
   }, [value]);
   return (
     <div>
-      <div style={{ height: "15vh", position: "relative", margin: "2em" }}>
-        <h1 style={{ display: "inline-block" }}>Product List</h1>
+      <div className="titleDiv">
+        <h1 >Product List</h1>
         <div
-          style={{
-            float: "right",
-            display: "inline-block",
-            position: "relative",
-            top: "30%",
-            bottom: "30%",
-          }}
+          className="buttonDiv"
         >
           <button className="N" onClick={()=>{
             navigate(LINKS.addProduct);
@@ -51,9 +46,7 @@ const ProductPage = () => {
             MASS DELETE
           </button>
         </div>
-        <div
-          style={{ width: "100%", backgroundColor: "black", height: ".8vh" }}
-        />
+        <Line/>
       </div>
       <ProductsList products={products}/>
     </div>
