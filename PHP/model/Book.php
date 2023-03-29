@@ -73,7 +73,17 @@ class Book implements IProduct{
         return "";
     }
 
-    function read(){
+    public function read( $id):mixed
+    {
+        // echo "ID is ".$id."\n";
+        // print_r($id);
+        $object=$this->entityManager->find($this->getClassName(),$id);
+        if (is_null($object))
+            return null;
+        $arr= [];
+        $arr['product']= $object->getProduct()->read($id);
+        $arr['weight']= $object->getWeight();
+        return $arr;        
     }
 };
 

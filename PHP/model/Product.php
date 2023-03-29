@@ -22,8 +22,9 @@ class Product implements IProduct{
     private string $id;
     #[ORM\Column(type: 'string')]
     private string $name;
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'float')]
     private float $price;
+
 
     private $entityManager;
 
@@ -57,8 +58,6 @@ class Product implements IProduct{
         $this->price = $price;
     }
 
-
-
     function create($post):string{
         $this->setId($post["SKU"]);
         $this->setPrice($post["price"]);
@@ -80,7 +79,12 @@ class Product implements IProduct{
         return "";
     }
 
-    function read()
+    public function read($id):mixed
     {
+        $arr=[];
+        $arr['SKU']= $this->id;
+        $arr['name']= $this->name;
+        $arr['price']= $this->price;
+        return $arr;        
     }
 }

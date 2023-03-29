@@ -8,3 +8,11 @@ function checkPostRequest()
         exit;
     }
 }
+function checkGetRequest()
+{
+    if ($_SERVER["REQUEST_METHOD"] != "GET") {
+        header("HTTP/1.1 401 Unauthorized");
+        echo "Expecting GET but received ".$_SERVER["REQUEST_METHOD"] ;
+        exit;
+    }
+}

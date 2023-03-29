@@ -2,10 +2,11 @@
 namespace Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'FURNITURE')]
-class Furniture{
+class Furniture implements IProduct{
 
     public static function getTableName()
     {
@@ -27,6 +28,12 @@ class Furniture{
     private float $width;
     #[ORM\Column(type: 'float')]
     private float $height;
+
+    private $entityManager;
+
+    public function setEntity($entity){
+        $this->entityManager= $entity;
+    }
 
     public function getProduct():Product{
         return $this->product;
@@ -53,7 +60,58 @@ class Furniture{
         $this->product= $product;
     }
 
+    public function create($post): string{
+        $message= $this->checkValidity($post);
+        if(!empty($message)){
+            return "Wrong Format! ". $message;
+        }
+        $product= new Product();
+        $product->setEntity($this->entityManager);
+        try{
+            $product->create($post);
+            $this->setProduct($product);
+            $this->entityManager->persist($this);
+            $this->entityManager->flush();
+        }catch(Exception $e){
+            return "Message :\"".$e->getMessage()."\"";
+        }
+        return "";
+        
+    }
+    public function checkValidity($object): string
+    {
+        $message=(new Product())->checkValidity($object);
+        if(!empty($message))
+            return $message;
+        if (empty($object['length']))
+            return "Expected length key";
+        $this->length=floatval( $object['length']);
+        if (empty($object['width']))
+            return "Expected width key";
+        $this->width=floatval( $object['width']);
+        if (empty($object['height']))
+            return "Expected height key";
+        $this->height=floatval( $object['height']);
+        return "";
+    }
+    private function checkPresenceAndUpdate($object,$name,$value):bool{
+        if(empty($object[$name]))
+            return false;
+        $value=floatval($object[$name]);
+        return true;
+    }
+    public function read( $id):mixed
+    {
+        $object=$this->entityManager->find($this->getClassName(),$id);
+        if (is_null($object))
+            return null;
+        $arr= [];
+        $arr['product']= $object->getProduct()->read($id);
+        $arr['length']= $object->getLength();
+        $arr['width']= $object->getWidth();
+        $arr['height']= $object->getHeight();
+
+        return $arr;          
+    }
+
 };
-
-
-?>
