@@ -18,7 +18,7 @@ const AddProduct = () => {
       <div className="titleDiv">
         <h1>Product Add</h1>
         <div className="buttonDiv">
-          <button className="N">Save</button>
+          <button className="N" onClick={()=>{product.createProduct()}}>Save</button>
           <button className="N">Cancel</button>
         </div>
         <Line />
