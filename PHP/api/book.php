@@ -1,18 +1,18 @@
 <?php
-    // header('Access-Control-Allow-Origin: *');
-    $servername = "localhost";
-    $username = "producer";
-    $password = "Producer1234?";
-    
-    // Create connection
-    $conn = new mysqli($servername, $username, $password);
-    $conn ->query("use PRODUCTION");
-    
-    // Check connection
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
-    echo "Connected successfully";
-    print_r ($conn->query("SELECT * FROM PRODUCT"));
-  
+
+use Model\Product;
+    require_once "model/Product.php";
+    require_once "src/bootstrap.php";
+    // use Model\Product;
+    // $product= new Product();
+    // $product->setSKU('key');
+    // $product->setName('Seif');
+    // $product->setPrice(15.52);
+
+    // $entityManager->persist($product);
+    // $entityManager->flush();
+
+    $productRepository = $entityManager->getRepository(Product::getClassName());
+    $products = $productRepository->findAll();
+    print_r($products);
 ?>
