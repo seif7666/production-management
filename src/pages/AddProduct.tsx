@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import Form from "../components/Form";
 import Line from "../components/Line";
 import {
@@ -8,18 +9,24 @@ import {
   ProductProps,
 } from "../components/Products";
 import TypeSwitcher from "../components/TypeSwitcher";
-import { PRODUCTS } from "../constants";
+import { LINKS, PRODUCTS } from "../constants";
 import "../css/global.css";
 import { Product } from "../store/Product";
 const AddProduct = () => {
+  const navigate= useNavigate();
   const [product, setProduct] = useState<Product>(null);
   return (
     <div>
       <div className="titleDiv">
         <h1>Product Add</h1>
         <div className="buttonDiv">
-          <button className="N" onClick={()=>{product.createProduct()}}>Save</button>
-          <button className="N">Cancel</button>
+          <button className="N" onClick={async()=>{
+            await product.createProduct();
+            navigate(LINKS.home);
+          }}>Save</button>
+          <button className="N" onClick={()=>{
+            navigate(LINKS.home)
+          }}>Cancel</button>
         </div>
         <Line />
       </div>

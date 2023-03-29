@@ -11,6 +11,9 @@ type ProductsListData = {
   products: Product[];
 };
 const ProductsList = (data: ProductsListData) => {
+  useEffect(()=>{
+
+  },[data.products])
   return (
     <div style={{ display: "flex", flexWrap: "wrap", margin: "3em" }}>
       {data.products.map((element: Product) => element.render())}
@@ -18,7 +21,7 @@ const ProductsList = (data: ProductsListData) => {
   );
 };
 const ProductPage = () => {
-  const [products, setProducts] = useState(productFactory.getProducts());
+  const [products, setProducts] = useState([]);
   const [value, setValue] = useState(0);
   const navigate= useNavigate();
 

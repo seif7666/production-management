@@ -1,5 +1,6 @@
 import { axios_api } from "../service/request";
 import { Product } from "./Product";
+import productFactory, { ProductFactory } from "./ProductFactory";
 export class DVD extends Product {
   private size: number;
 
@@ -14,8 +15,9 @@ export class DVD extends Product {
   public getInnerComponent(): JSX.Element {
     return <p>Product By DVD!</p>;
   }
-  public createProduct(): boolean {
-    throw new Error("Method not implemented.");
+  public createProduct():boolean {
+    super.createProductOnServer('create/dvd.php',this);
+    return true;
   }
 }
 export class Book extends Product {
@@ -32,14 +34,7 @@ export class Book extends Product {
     return <p>Product By Book!</p>;
   }
   public createProduct(): boolean {
-    axios_api.post("", this).then(
-      () => {
-        console.log("Done!");
-      },
-      () => {
-        console.log("Rejected!");
-      }
-    );
+    super.createProductOnServer('create/book.php',this);
     return true;
   }
 }
@@ -76,6 +71,7 @@ export class Furniture extends Product {
     return <p>Product By Furniture!</p>;
   }
   public createProduct(): boolean {
-    throw new Error("Method not implemented.");
+    super.createProductOnServer('create/furniture.php',this);
+    return true;
   }
 }

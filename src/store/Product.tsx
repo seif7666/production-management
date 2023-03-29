@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
+import { axios_api } from "../service/request";
 
 
 type ProductProps = {
@@ -65,4 +66,8 @@ export abstract class Product extends React.Component<{},{checked:boolean}> {
     );
   }
   public abstract createProduct(): boolean;
+  protected async createProductOnServer(url:string,object:Product){
+    let response= await axios_api.post(url,object);
+    return response;
+  }
 }
