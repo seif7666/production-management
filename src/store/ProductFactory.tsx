@@ -1,6 +1,8 @@
 import { axios_api } from "../service/request";
 import { Product } from "./Product";
 import { Book, DVD, Furniture } from "./ProductChildren";
+import { makeAutoObservable } from "mobx";
+import { observer } from "mobx-react-lite";
 
 type ProductProps = {
   SKU: string;
@@ -17,8 +19,10 @@ type RequestProps = {
 };
 export class ProductFactory {
   private static singletonInstance: ProductFactory = new ProductFactory();
-  private products: Product[] = [];
-  private constructor() {}
+  private products: Product[] = undefined;
+  private constructor() {
+    makeAutoObservable(this);
+  }
 
   public static getSingletonInstance(): ProductFactory {
     if (this.singletonInstance === null)
@@ -27,16 +31,19 @@ export class ProductFactory {
   }
 
   public getProducts(): Product[] {
-    if (this.products.length === 0) this.loadProducts();
     return this.products;
   }
-  private async loadProducts() {
+  public async loadProducts() {
+    console.log('Called!');
+    if (typeof(this.products)!== "undefined") return;
     this.products = [];
+    console.log("Waiting...");
     let response = await axios_api.get("get/products.php");
     for (let product of response.data) {
       this.products.push(this.getCorrectProduct(product as RequestProps));
     }
-    console.log(this.products);
+    console.log('Terminated!');
+
   }
   private getCorrectProduct(product: RequestProps): Product {
     if (product.hasOwnProperty("size")) {
@@ -66,20 +73,18 @@ export class ProductFactory {
       );
   }
 
-  public deleteCheckedProducts(): number {
-    let deleted = 0;
+  public deleteCheckedProducts() {
+    let deletedIDs = [];
     for (let i = 0; i < this.products.length; i++) {
       if (this.products[i].getChecked()) {
-        this.products.splice(i, 1);
-        i--;
-        deleted++;
+        deletedIDs.push(this.products[i].getSKU());
       }
     }
-    return deleted;
+    return axios_api.post('delete/products.php',{Ids:deletedIDs});
   }
 
-  public updateProducts(){
-    this.loadProducts();
+  public updateProducts() {
+    this.products = undefined;
   }
 }
 const productFactory = ProductFactory.getSingletonInstance();

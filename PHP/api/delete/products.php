@@ -10,23 +10,23 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 
 header('Access-Control-Allow-Origin: *');
-checkGetRequest();
-$query = $entityManager->createQuery('SELECT u.id FROM Model\Product u ORDER BY u.id');
-$ids = $query->getResult();
-$arr= [];
+checkPostRequest();
+print_r($_POST["Ids"]);
+if(empty($_POST['Ids'])){
+    header("HTTP/1.1 400 Bad Request");
+    echo "The key {Ids} was not found!";
+    exit;
+}
+$ids=$_POST['Ids'];
 foreach($ids as $id){
     $objects=[new Book(),new DVD(),new Furniture()];
     foreach($objects as $obj){
         $obj->setEntity($entityManager);
-        $data=$obj->read($id['id']);
+        $data=$obj->read($id);
+        print_r($data);
         if(!is_null($data)){
-            array_push($arr, $data);
-            // print_r($arr);
+            $obj->delete();
              break;
         }
-        // break;
     }
 }
-
-header("Content-Type: JSON");
-echo json_encode($arr);

@@ -4,6 +4,7 @@ type FormProps = {
   name: string;
   setter;
   idName?: string;
+  isNumber?:boolean;
 };
 const Form = (data: FormProps) => {
   return (
@@ -16,7 +17,7 @@ const Form = (data: FormProps) => {
           <input
             id={data.idName}
             placeholder={data.name}
-            type={"text"}
+            type={typeof(data.isNumber)!==undefined && data.isNumber ? "number": "text" }
             onChange={(e) => {
               data.setter(e.target.value);
             }}

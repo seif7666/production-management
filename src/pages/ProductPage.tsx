@@ -6,29 +6,37 @@ import productFactory, { ProductFactory } from "../store/ProductFactory";
 import { useNavigate } from "react-router-dom";
 import { LINKS } from "../constants";
 import Line from "../components/Line";
+import { observer } from "mobx-react-lite";
 
 type ProductsListData = {
-  products: Product[];
+  val: number;
 };
-const ProductsList = (data: ProductsListData) => {
+const ProductsList = observer((val:ProductsListData) => {
+  const [products,setProducts]=useState([]);
   useEffect(()=>{
-
-  },[data.products])
+    const fetch=async ()=>{
+      console.log('Fetching...')
+      await productFactory.loadProducts();
+      console.log('Fetching Done!');
+      setProducts(productFactory.getProducts());
+    }
+    fetch();
+  },[val.val])
   return (
     <div style={{ display: "flex", flexWrap: "wrap", margin: "3em" }}>
-      {data.products.map((element: Product) => element.render())}
+      {products.map((element: Product) => element.render())}
     </div>
   );
-};
-const ProductPage = () => {
-  const [products, setProducts] = useState([]);
+});
+const ProductPage = observer(() => {
   const [value, setValue] = useState(0);
   const navigate= useNavigate();
 
-  useEffect(() => {
-    console.log("RERENDERING...");
-    setProducts(productFactory.getProducts());
-  }, [value]);
+  useEffect(()=>{
+    console.log('ReRendered!')
+  },[value])
+  function useForceUpdate(){
+    return () => setValue(value + 1); }
   return (
     <div>
       <div className="titleDiv">
@@ -41,19 +49,20 @@ const ProductPage = () => {
           }}>ADD</button>
           <button
             className="N"
-            onClick={() => {
-              productFactory.deleteCheckedProducts();
-              setValue(value + 1);
+            onClick={async () => {
+              await productFactory.deleteCheckedProducts();
+              productFactory.updateProducts();
+              useForceUpdate()();
             }}
           >
-            MASS DELETE
+            MASS DELETE {value}
           </button>
         </div>
         <Line/>
       </div>
-      <ProductsList products={products}/>
+      <ProductsList val={value}/>
     </div>
   );
-};
+});
 
 export default ProductPage;

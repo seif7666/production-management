@@ -24,6 +24,7 @@ export abstract class Product extends React.Component<{},{checked:boolean}> {
     this.setState({checked:false})
     
   }
+  public getSKU=()=>this.SKU;
   public setSKU=(sku)=>this.SKU=sku;
   public setPrice=(price)=>this.price=price;
   public setName=(name)=>this.name=name;
@@ -58,16 +59,16 @@ export abstract class Product extends React.Component<{},{checked:boolean}> {
           <br />
           {this.name}
           <br />
-          {this.price}
+          {this.price} $
           <br />
           {this.getInnerComponent()}
         </div>
       </div>
     );
   }
-  public abstract createProduct(): boolean;
-  protected async createProductOnServer(url:string,object:Product){
-    let response= await axios_api.post(url,object);
-    return response;
+  public abstract createProduct();
+
+  protected createProductOnServer(url:string,object:Product){
+    return axios_api.post(url,object);;
   }
 }

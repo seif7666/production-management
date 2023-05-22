@@ -26,7 +26,7 @@ class DVD implements IProduct{
 
 
     #[ORM\Id]
-    #[ORM\OneToOne(targetEntity: Product::class)]
+    #[ORM\OneToOne(targetEntity: Product::class, cascade: ['ALL'])]
     private Product $product;
     
     #[ORM\Column(type: 'float')]
@@ -79,9 +79,18 @@ class DVD implements IProduct{
         $arr= [];
         $arr['product']= $object->getProduct()->read($id);
         $arr['size']= $object->getSize();
+        $this->product=$object->getProduct();
+        $this->product->setEntity($this->entityManager);
+
         return $arr;  
     }
+    function delete(){
+        $entity = $this->entityManager->merge($this);  
+        $this->entityManager->remove($entity); 
+        $this->entityManager->flush();
+        $this->getProduct()->delete();
 
+    }
 };
 
 

@@ -12,6 +12,7 @@ import TypeSwitcher from "../components/TypeSwitcher";
 import { LINKS, PRODUCTS } from "../constants";
 import "../css/global.css";
 import { Product } from "../store/Product";
+import productFactory from "../store/ProductFactory";
 const AddProduct = () => {
   const navigate= useNavigate();
   const [product, setProduct] = useState<Product>(null);
@@ -21,8 +22,12 @@ const AddProduct = () => {
         <h1>Product Add</h1>
         <div className="buttonDiv">
           <button className="N" onClick={async()=>{
-            await product.createProduct();
-            navigate(LINKS.home);
+            product.createProduct().then(()=>{
+              productFactory.updateProducts();
+              navigate(LINKS.home);
+            },()=>{
+              alert('ERROR');
+            });
           }}>Save</button>
           <button className="N" onClick={()=>{
             navigate(LINKS.home)
@@ -59,15 +64,14 @@ const ProductForm = (data: ProductProps) => {
     data.product.setSKU(sku);
     data.product.setName(name);
     data.product.setPrice(price);
-    console.log(data.product)
   },[sku,name,price,data.product])
 
   return (
     <div style={{ margin: "2em" }}>
       <form id="#product_form">
-        <Form name={"SKU"} idName="#sku" setter={setSKU} />
+        <Form name={"SKU"} idName="#sku" setter={setSKU} isNumber={true} />
         <Form name={"Name"} idName="#name" setter={setName} />
-        <Form name={"Price ($)"} idName="#price" setter={setPrice} />
+        <Form name={"Price ($)"} idName="#price" setter={setPrice} isNumber={true}/>
         <TypeSwitcher setter={setSelectedIndex} />
         <div
           style={{

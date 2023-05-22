@@ -18,7 +18,7 @@ class Product implements IProduct{
     }
 
     #[ORM\Id]
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'integer')]
     private string $id;
     #[ORM\Column(type: 'string')]
     private string $name;
@@ -87,4 +87,10 @@ class Product implements IProduct{
         $arr['price']= $this->price;
         return $arr;        
     }
+
+    function delete(){
+        $this->entityManager->remove($this); 
+        $this->entityManager->flush();
+    }
+
 }

@@ -13,11 +13,11 @@ export class DVD extends Product {
     this.size = size;
   }
   public getInnerComponent(): JSX.Element {
-    return <p>Product By DVD!</p>;
+    return <p>Size: {this.size}</p>;
   }
-  public createProduct():boolean {
-    super.createProductOnServer('create/dvd.php',this);
-    return true;
+  public createProduct() {
+    return super.createProductOnServer('create/dvd.php',this);
+
   }
 }
 export class Book extends Product {
@@ -31,11 +31,10 @@ export class Book extends Product {
     this.weight = weight;
   }
   public getInnerComponent(): JSX.Element {
-    return <p>Product By Book!</p>;
+    return <p>Weight: {this.weight} KG</p>;
   }
-  public createProduct(): boolean {
-    super.createProductOnServer('create/book.php',this);
-    return true;
+  public createProduct() {
+    return super.createProductOnServer('create/book.php',this);
   }
 }
 export class Furniture extends Product {
@@ -68,10 +67,9 @@ export class Furniture extends Product {
   }
 
   public getInnerComponent(): JSX.Element {
-    return <p>Product By Furniture!</p>;
+    return <p>Width: {this.width}<br/>Length: {this.length}</p>;
   }
-  public createProduct(): boolean {
-    super.createProductOnServer('create/furniture.php',this);
-    return true;
+  public createProduct(){
+    return super.createProductOnServer('create/furniture.php',this);
   }
 }
